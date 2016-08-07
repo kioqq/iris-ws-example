@@ -1,8 +1,6 @@
 package main
 
 import (
-	//"github.com/kataras/iris"
-	//"github.com/iris-contrib/middleware/logger"
 	"github.com/kataras/iris"
 	"log"
 	"encoding/json"
@@ -44,7 +42,6 @@ func main() {
 	})
 
 	iris.Config.Websocket.Endpoint = "/my_endpoint"
-	//iris.Config().Websocket.Headers["Access-Control-Allow-Origin"] = "*"
 
 	var myChatRoom = "room1"
 	var users = make(map[string]string)
@@ -103,8 +100,6 @@ func main() {
 			msgk := Message{Username:username_text,Message:message}
 			msg_json, _ := json.Marshal(msgk)
 
-			//c.To(myChatRoom).Emit("new message",msg_json)
-
 			c.To(iris.Broadcast).Emit("new message",msg_json)
 
 		})
@@ -118,7 +113,6 @@ func main() {
 			username := UserName{Username:username_text}
 			username_json, _ := json.Marshal(username)
 
-			//c.To(myChatRoom).Emit("typing",username_json)
 			c.To(iris.Broadcast).Emit("typing",username_json)
 
 		})
@@ -132,8 +126,7 @@ func main() {
 			//username := UserName{Username:username_text}
 			//username_json, _ := json.Marshal(username)
 
-			//c.To(myChatRoom).Emit("stoptyping",username_json)
-			//c.To(iris.Broadcast).Emit("stoptyping",username_json)
+			//c.To(myChatRoom).Emit("stop typing",username_json)
 
 		})
 
@@ -156,21 +149,6 @@ func main() {
 			fmt.Printf("\nConnection with ID: %s has been disconnected!", c.ID())
 
 		})
-
-
-		//c.On("chat", func(message string) {
-		//	// to all except this connection ->
-		//	//c.To(websocket.Broadcast).Emit("chat", "Message from: "+c.ID()+"-> "+message)
-		//
-		//	// to the client ->
-		//	//c.Emit("chat", "Message from myself: "+message)
-		//
-		//	//send the message to the whole room,
-		//	//all connections are inside this room will receive this message
-		//	username := users[c.ID()]
-		//
-		//	c.To(myChatRoom).Emit("chat", username  + ": "+message)
-		//})
 
 	})
 

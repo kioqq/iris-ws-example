@@ -270,7 +270,7 @@ $(function() {
   });
 
   // Whenever the server emits 'stop typing', kill the typing message
-  ws.On('stoptyping', function (data) {
+  ws.On('stop typing', function (data) {
      var jsondata = JSON.parse(data);
     removeChatTyping(jsondata);
   });
